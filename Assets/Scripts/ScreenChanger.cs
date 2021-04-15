@@ -9,30 +9,30 @@ public class ScreenChanger : MonoBehaviour
     private GameObject _currentScreen;
 
     private float _alphaDuration;
-    private bool _changePermission;
+    private bool _loadPermission;
 
     private void Start()
     {
         _alphaDuration = 0.2f;
-        _changePermission = false;
+        _loadPermission = false;
         _currentScreen = transform.parent.gameObject;
     }
 
     private void Update()
     {
-        ChangeScreen(_currentScreen, _targetScreen);
+        TryLoadScreen(_currentScreen, _targetScreen);
     }
 
     public void ToStartScreenChange()
     {
-        _changePermission = true;
+        _loadPermission = true;
         _currentScreen.GetComponent<CanvasGroup>().DOFade(0f, _alphaDuration);
         _targetScreen.GetComponent<CanvasGroup>().interactable = false;
     }
 
-    private void ChangeScreen(GameObject currentScreen, GameObject targetScreen)
+    private void TryLoadScreen(GameObject currentScreen, GameObject targetScreen)
     {
-        if (currentScreen.GetComponent<CanvasGroup>().alpha <= 0 && _changePermission)
+        if (currentScreen.GetComponent<CanvasGroup>().alpha <= 0 && _loadPermission)
         {
             currentScreen.SetActive(false);
 
@@ -41,7 +41,7 @@ public class ScreenChanger : MonoBehaviour
             targetScreen.GetComponent<CanvasGroup>().DOFade(1f, _alphaDuration);
             targetScreen.GetComponent<CanvasGroup>().interactable = true;
 
-            _changePermission = false;
+            _loadPermission = false;
         }
     }
 }
