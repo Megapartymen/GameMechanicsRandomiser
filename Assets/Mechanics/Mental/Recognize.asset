@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c179b6242eb92314092dfac97b40320c, type: 3}
+  m_Name: Recognize
+  m_EditorClassIdentifier: 
+  _name: Recognize
+  _icon: {fileID: 21300000, guid: aac4667851143f742a4f6046bd9fe161, type: 3}
+  _color: {r: 0.36078432, g: 0.86666673, b: 0.9058824, a: 1}
