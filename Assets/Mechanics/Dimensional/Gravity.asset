@@ -15,3 +15,4 @@ MonoBehaviour:
   _name: Gravity
   _icon: {fileID: 21300000, guid: 31b3dc96530b04f4c97202d30498a958, type: 3}
   _color: {r: 0.9490197, g: 0.43137258, b: 0.8705883, a: 1}
+  _nameOfInfoScreen: InfoScreenGravity

@@ -11,6 +11,8 @@ public class ScreenChanger : MonoBehaviour
     private float _alphaDuration;
     private bool _loadPermission;
 
+    //[SerializeField] string NameOfSpecialTargetScreen;
+
     private void Start()
     {
         _alphaDuration = 0.2f;
@@ -20,28 +22,56 @@ public class ScreenChanger : MonoBehaviour
 
     private void Update()
     {
-        TryLoadScreen(_currentScreen, _targetScreen);
+        TryLoadScreen();
     }
 
     public void ToStartScreenChange()
     {
         _loadPermission = true;
+        //TryGetSpecialTargetScreen();
         _currentScreen.GetComponent<CanvasGroup>().DOFade(0f, _alphaDuration);
         _targetScreen.GetComponent<CanvasGroup>().interactable = false;
     }
 
-    private void TryLoadScreen(GameObject currentScreen, GameObject targetScreen)
+    private void TryLoadScreen()
     {
-        if (currentScreen.GetComponent<CanvasGroup>().alpha <= 0 && _loadPermission)
+        if (_currentScreen.GetComponent<CanvasGroup>().alpha <= 0 && _loadPermission)
         {
-            currentScreen.SetActive(false);
+            _currentScreen.SetActive(false);
 
-            targetScreen.GetComponent<CanvasGroup>().alpha = 0.01f;
-            targetScreen.SetActive(true);
-            targetScreen.GetComponent<CanvasGroup>().DOFade(1f, _alphaDuration);
-            targetScreen.GetComponent<CanvasGroup>().interactable = true;
+            if (gameObject.TryGetComponent<SpecialTargetScreen>(out SpecialTargetScreen specialTargetScreen))
+            {
+                _targetScreen = specialTargetScreen.TargetScreen;
+            }
+
+            TuneBackButtonOnTargetScreen();
+
+            _targetScreen.GetComponent<CanvasGroup>().alpha = 0.01f;
+            _targetScreen.SetActive(true);
+            _targetScreen.GetComponent<CanvasGroup>().DOFade(1f, _alphaDuration);
+            _targetScreen.GetComponent<CanvasGroup>().interactable = true;
 
             _loadPermission = false;
         }
     }
+
+    private void TuneBackButtonOnTargetScreen()
+    {
+        for (int i = 0; i < _targetScreen.transform.childCount; i++)
+        {
+            if (_targetScreen.transform.GetChild(i).TryGetComponent<BackButton>(out BackButton dummy))
+            {
+                _targetScreen.transform.GetChild(i).gameObject.GetComponent<ScreenChanger>()._targetScreen = _currentScreen;
+                break;
+            }
+        }
+    }
+
+    //private void TryGetSpecialTargetScreen()
+    //{
+    //    if (NameOfSpecialTargetScreen != null)
+    //    {
+    //        _targetScreen = GameObject.Find(NameOfSpecialTargetScreen);
+    //    }               
+    //}
 }

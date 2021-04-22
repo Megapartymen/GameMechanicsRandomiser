@@ -15,3 +15,4 @@ MonoBehaviour:
   _name: Intersect
   _icon: {fileID: 21300000, guid: 17263f47754d6b640a6d109ad565fad4, type: 3}
   _color: {r: 0.38431376, g: 0.5529412, b: 0.9803922, a: 1}
+  _nameOfInfoScreen: InfoScreenIntersect

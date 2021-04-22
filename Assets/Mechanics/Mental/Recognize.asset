@@ -15,3 +15,4 @@ MonoBehaviour:
   _name: Recognize
   _icon: {fileID: 21300000, guid: aac4667851143f742a4f6046bd9fe161, type: 3}
   _color: {r: 0.36078432, g: 0.86666673, b: 0.9058824, a: 1}
+  _nameOfInfoScreen: InfoScreenRecognize

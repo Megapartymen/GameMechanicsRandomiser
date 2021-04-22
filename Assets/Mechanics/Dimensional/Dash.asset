@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c179b6242eb92314092dfac97b40320c, type: 3}
-  m_Name: Jump
+  m_Name: Dash
   m_EditorClassIdentifier: 
-  _name: Jump
-  _icon: {fileID: 21300000, guid: 46a76f7eb8bb49446a9f3af1157c3ccd, type: 3}
+  _name: Dash
+  _icon: {fileID: 21300000, guid: c9e9032e07ff3694f90ecc1c02ea4c95, type: 3}
   _color: {r: 0.9490197, g: 0.43137258, b: 0.8705883, a: 1}
+  _nameOfInfoScreen: InfoScreenDash

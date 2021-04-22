@@ -15,3 +15,4 @@ MonoBehaviour:
   _name: Choose
   _icon: {fileID: 21300000, guid: 7f5a5d3470cda6e41b9ad33df9ad2790, type: 3}
   _color: {r: 0.36078432, g: 0.86666673, b: 0.9058824, a: 1}
+  _nameOfInfoScreen: InfoScreenChoose

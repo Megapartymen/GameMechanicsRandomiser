@@ -15,3 +15,4 @@ MonoBehaviour:
   _name: Construct
   _icon: {fileID: 21300000, guid: 8440a646704b00746a930266e14d60d1, type: 3}
   _color: {r: 0.36078432, g: 0.86666673, b: 0.9058824, a: 1}
+  _nameOfInfoScreen: InfoScreenConstruct

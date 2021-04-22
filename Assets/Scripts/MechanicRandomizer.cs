@@ -13,16 +13,25 @@ public class MechanicRandomizer : MonoBehaviour
 
     [SerializeField] private Image _firstMechanicIcon;
     [SerializeField] private TextMeshProUGUI _firstMechanicName;
+    [SerializeField] private ScreenChanger _firstMechanicScreenChanger;
     [SerializeField] private Image _secondMechanicIcon;
     [SerializeField] private TextMeshProUGUI _secondMechanicName;
+    [SerializeField] private ScreenChanger _secondMechanicScreenChanger;
     [SerializeField] private Image _thirdMechanicIcon;
     [SerializeField] private TextMeshProUGUI _thirdMechanicName;
+    [SerializeField] private ScreenChanger _thirdMechanicScreenChanger;
+
+    public string _firstInfoScreenName;
+    public string _secondInfoScreenName;
+    public string _thirdInfoScreenName;
 
     //private List<GameMechanic> _mechanicsForRandom;
     private GameMechanic _firstResultMechanic;
     private GameMechanic _secondResultMechanic;
     private GameMechanic _thirdResultMechanic;
 
+    
+    
     private bool _useCombinedMechanics = false;
 
     public void AddCombinedMechanicsFromList()
@@ -50,11 +59,11 @@ public class MechanicRandomizer : MonoBehaviour
         }
         
         _firstResultMechanic = RandomizeMechanic(mechanicsForRandom);
-        ShowRandomResult(_firstResultMechanic, _firstMechanicIcon, _firstMechanicName);
+        ShowRandomResult(_firstResultMechanic, _firstMechanicIcon, _firstMechanicName, out _firstInfoScreenName);
         _secondResultMechanic = RandomizeMechanic(mechanicsForRandom);
-        ShowRandomResult(_secondResultMechanic, _secondMechanicIcon, _secondMechanicName);
+        ShowRandomResult(_secondResultMechanic, _secondMechanicIcon, _secondMechanicName, out _secondInfoScreenName);
         _thirdResultMechanic = RandomizeMechanic(mechanicsForRandom);
-        ShowRandomResult(_thirdResultMechanic, _thirdMechanicIcon, _thirdMechanicName);
+        ShowRandomResult(_thirdResultMechanic, _thirdMechanicIcon, _thirdMechanicName, out _thirdInfoScreenName);
     }
 
     private GameMechanic RandomizeMechanic(List<GameMechanic> list)
@@ -65,12 +74,14 @@ public class MechanicRandomizer : MonoBehaviour
         return mechanic;
     }
 
-    private void ShowRandomResult(GameMechanic mechanic, Image icon, TextMeshProUGUI name)
+    private void ShowRandomResult(GameMechanic mechanic, Image icon, TextMeshProUGUI name, out string infoScreenName)
     {
         icon.sprite = mechanic.Icon;
         name.text = mechanic.Name;
         icon.color = mechanic.Color;
         name.color = mechanic.Color;
+        infoScreenName = mechanic.NameOfInfoScreen;
+        //infoScreen.NameOfSpecialTargetScreen = mechanic.NameOfInfoScreen;
     }
 
     private void AddMechanicsToGlobalList(List<GameMechanic> globalList, List<GameMechanic> sourceList)
@@ -81,24 +92,19 @@ public class MechanicRandomizer : MonoBehaviour
         }
     }
 
+    private void TuneAboutButtonOnRandomResult()
+    {
+        //GameObject backButton = _targetScreen.transform.Find("BackButton").gameObject;
 
+        //for (int i = 0; i < _targetScreen.transform.childCount; i++)
+        //{
+        //    if (_targetScreen.transform.GetChild(i).TryGetComponent<BackButton>(out BackButton dummy))
+        //    {
+        //        backButton = _targetScreen.transform.GetChild(i).gameObject;
+        //        break;
+        //    }
+        //}
 
-
-    //public void RandomizeMechanic()
-    //{
-    //    //заполнить поля с исключениями
-
-    //    if (_firstMechanicForExclude != null || _secondMechanicForExclude != null)
-    //    {
-    //        _mechanicsForRandom.Remove(_firstMechanicForExclude);
-    //        _mechanicsForRandom.Remove(_secondMechanicForExclude);
-    //    }
-
-    //    _resultMechanic = _mechanicsForRandom[Random.Range(0, _mechanicsForRandom.Count)];
-
-    //    _icon.sprite = _resultMechanic.Icon;
-    //    _name.text = _resultMechanic.Name;
-    //    _icon.color = _resultMechanic.Color;
-    //    _name.color = _resultMechanic.Color;
-    //}
+        //backButton.GetComponent<ScreenChanger>()._targetScreen = _currentScreen;
+    }
 }

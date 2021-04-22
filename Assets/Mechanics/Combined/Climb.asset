@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Climb
   m_EditorClassIdentifier: 
   _name: Climb
-  _icon: {fileID: 21300000, guid: 46a76f7eb8bb49446a9f3af1157c3ccd, type: 3}
+  _icon: {fileID: 21300000, guid: be54486fc4188504d9a800ce4f882a37, type: 3}
   _color: {r: 0.9137255, g: 0.5764706, b: 0.34117648, a: 1}
+  _nameOfInfoScreen: InfoScreenClimb

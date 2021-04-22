@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c179b6242eb92314092dfac97b40320c, type: 3}
-  m_Name: Avoid
+  m_Name: Teleport
   m_EditorClassIdentifier: 
-  _name: Avoid
-  _icon: {fileID: 21300000, guid: 31b3dc96530b04f4c97202d30498a958, type: 3}
+  _name: Teleport
+  _icon: {fileID: 21300000, guid: 8d2e1531231beac4c89099e7181485d0, type: 3}
   _color: {r: 0.9137255, g: 0.5764706, b: 0.34117648, a: 1}
+  _nameOfInfoScreen: InfoScreenTeleport
