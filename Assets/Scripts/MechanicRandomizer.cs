@@ -13,15 +13,24 @@ public class MechanicRandomizer : MonoBehaviour
     [SerializeField] private List<GameMechanic> _mentalMechanics;
     [SerializeField] private List<GameMechanic> _combinedMechanics;    
 
+    [Header("First random result")]
     [SerializeField] private Image _firstMechanicIcon;
     [SerializeField] private TextMeshProUGUI _firstMechanicName;
     [SerializeField] private SpecialTargetScreen _firstInfoButton;
+
+    [Header("Second random result")]
     [SerializeField] private Image _secondMechanicIcon;
     [SerializeField] private TextMeshProUGUI _secondMechanicName;
     [SerializeField] private SpecialTargetScreen _secondInfoButton;
+
+    [Header("Third random result")]
     [SerializeField] private Image _thirdMechanicIcon;
     [SerializeField] private TextMeshProUGUI _thirdMechanicName;
     [SerializeField] private SpecialTargetScreen _thirdInfoButton;
+
+    [Header("Toggles")]
+    [SerializeField] private Toggle _useAct;
+    [SerializeField] private Toggle _useCombined;
 
     //public string _firstInfoScreenName;
     //public string _secondInfoScreenName;
@@ -32,6 +41,7 @@ public class MechanicRandomizer : MonoBehaviour
     private GameMechanic _secondRandomResult;
     private GameMechanic _thirdRandomResult;
 
+    
     private bool _useCombinedMechanics;
     private bool _useActMechanic;
 
@@ -69,12 +79,12 @@ public class MechanicRandomizer : MonoBehaviour
         AddMechanicsToGlobalList(_mechanicsForRandom, _triggerMechanics);
         AddMechanicsToGlobalList(_mechanicsForRandom, _mentalMechanics);
 
-        if (_useCombinedMechanics)
+        if (_useCombined.isOn)
         {
             AddMechanicsToGlobalList(_mechanicsForRandom, _combinedMechanics);
         }
 
-        if (_useActMechanic)
+        if (_useAct.isOn)
         {
             _mechanicsForRandom.Add(_actMechanic);
         }
@@ -148,6 +158,18 @@ public class MechanicRandomizer : MonoBehaviour
         }
     }
 
+    public void SuperMethod(bool ass)
+    {
+        if (ass)
+        {
+            _useActMechanic = true;
+        }
+        else
+        {
+            _useActMechanic = false;
+        }
+    }
+    
     public void AddCombinedMechanicsFromList()
     {
         _useCombinedMechanics = true;
