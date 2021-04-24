@@ -11,8 +11,6 @@ public class ScreenChanger : MonoBehaviour
     private float _alphaDuration;
     private bool _loadPermission;
 
-    //[SerializeField] string NameOfSpecialTargetScreen;
-
     private void Start()
     {
         _alphaDuration = 0.2f;
@@ -27,22 +25,26 @@ public class ScreenChanger : MonoBehaviour
 
     public void ToStartScreenChange()
     {
-        _loadPermission = true;
-        //TryGetSpecialTargetScreen();
-        _currentScreen.GetComponent<CanvasGroup>().DOFade(0f, _alphaDuration);
-        _targetScreen.GetComponent<CanvasGroup>().interactable = false;
+        
+
+        TryGetSpecialTargetScreen();
+
+        if (_targetScreen != null)
+        {
+            _loadPermission = true;
+            _currentScreen.GetComponent<CanvasGroup>().DOFade(0f, _alphaDuration);
+            _targetScreen.GetComponent<CanvasGroup>().interactable = false;
+        }
+
+        transform.root.GetComponent<AudioSource>().Play();
+
     }
 
     private void TryLoadScreen()
     {
         if (_currentScreen.GetComponent<CanvasGroup>().alpha <= 0 && _loadPermission)
         {
-            _currentScreen.SetActive(false);
-
-            if (gameObject.TryGetComponent<SpecialTargetScreen>(out SpecialTargetScreen specialTargetScreen))
-            {
-                _targetScreen = specialTargetScreen.TargetScreen;
-            }
+            _currentScreen.SetActive(false);            
 
             TuneBackButtonOnTargetScreen();
 
@@ -67,11 +69,11 @@ public class ScreenChanger : MonoBehaviour
         }
     }
 
-    //private void TryGetSpecialTargetScreen()
-    //{
-    //    if (NameOfSpecialTargetScreen != null)
-    //    {
-    //        _targetScreen = GameObject.Find(NameOfSpecialTargetScreen);
-    //    }               
-    //}
+    private void TryGetSpecialTargetScreen()
+    {
+        if (gameObject.TryGetComponent<SpecialTargetScreen>(out SpecialTargetScreen specialTargetScreen))
+        {
+            _targetScreen = specialTargetScreen.TargetScreen;
+        }
+    }
 }

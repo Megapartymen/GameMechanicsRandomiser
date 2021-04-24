@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class SpecialTargetScreen : MonoBehaviour
 {
+    [SerializeField] private GameObject _dummyScreen;
     [SerializeField] public GameObject TargetScreen;
-    [SerializeField] private GameObject _randomResultSpace;
-    [SerializeField] private string _NameOfTargetScreen;
+    [SerializeField] private GameObject _findInfoScreenSpace;
+    public string NameOfInfoScreen;
 
-    private void Update()
+    public void SetSpecialTargetScreen()
     {
-        _NameOfTargetScreen = _randomResultSpace.GetComponent<MechanicRandomizer>()._firstInfoScreenName;
-        TargetScreen = GameObject.Find(_NameOfTargetScreen);
-        TargetScreen.
+        GameObject tempForScreen = _findInfoScreenSpace.transform.Find(NameOfInfoScreen).gameObject; ;
+
+        if (_findInfoScreenSpace != tempForScreen)
+        {
+            TargetScreen = tempForScreen;
+        }
     }
 }

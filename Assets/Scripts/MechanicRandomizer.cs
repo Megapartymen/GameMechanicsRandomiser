@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class MechanicRandomizer : MonoBehaviour
 {
+    [SerializeField] private GameMechanic _actMechanic;
     [SerializeField] private List<GameMechanic> _dimensionalMechanics;
     [SerializeField] private List<GameMechanic> _triggerMechanics;
     [SerializeField] private List<GameMechanic> _mentalMechanics;
@@ -13,26 +15,138 @@ public class MechanicRandomizer : MonoBehaviour
 
     [SerializeField] private Image _firstMechanicIcon;
     [SerializeField] private TextMeshProUGUI _firstMechanicName;
-    [SerializeField] private ScreenChanger _firstMechanicScreenChanger;
+    [SerializeField] private SpecialTargetScreen _firstInfoButton;
     [SerializeField] private Image _secondMechanicIcon;
     [SerializeField] private TextMeshProUGUI _secondMechanicName;
-    [SerializeField] private ScreenChanger _secondMechanicScreenChanger;
+    [SerializeField] private SpecialTargetScreen _secondInfoButton;
     [SerializeField] private Image _thirdMechanicIcon;
     [SerializeField] private TextMeshProUGUI _thirdMechanicName;
-    [SerializeField] private ScreenChanger _thirdMechanicScreenChanger;
+    [SerializeField] private SpecialTargetScreen _thirdInfoButton;
 
-    public string _firstInfoScreenName;
-    public string _secondInfoScreenName;
-    public string _thirdInfoScreenName;
+    //public string _firstInfoScreenName;
+    //public string _secondInfoScreenName;
+    //public string _thirdInfoScreenName;
 
-    //private List<GameMechanic> _mechanicsForRandom;
-    private GameMechanic _firstResultMechanic;
-    private GameMechanic _secondResultMechanic;
-    private GameMechanic _thirdResultMechanic;
+    private List<GameMechanic> _mechanicsForRandom;
+    private GameMechanic _firstRandomResult;
+    private GameMechanic _secondRandomResult;
+    private GameMechanic _thirdRandomResult;
 
+    private bool _useCombinedMechanics;
+    private bool _useActMechanic;
+
+    private float _alphaDuration;
+    private float _toStartNextRandomCount;
+    private float _triggerRange;
+    private bool _startTrigger;
+
+    private void Start()
+    {
+        _useCombinedMechanics = false;
+        _useActMechanic = false;
+
+        _alphaDuration = 0.5f;
+        _triggerRange = 0.05f;
+        _toStartNextRandomCount = 0.5f;
+    }
+
+    private void Update()
+    {
+        TryRandomizeMechanic(_thirdMechanicIcon, _firstMechanicIcon, _firstMechanicName, _firstInfoButton, _startTrigger);
+        TryRandomizeMechanic(_firstMechanicIcon, _secondMechanicIcon, _secondMechanicName, _secondInfoButton);
+        TryRandomizeMechanic(_secondMechanicIcon, _thirdMechanicIcon, _thirdMechanicName, _thirdInfoButton);
+    }    
     
-    
-    private bool _useCombinedMechanics = false;
+    public void RandomizeAllMechanic()
+    {
+        gameObject.GetComponent<AudioSource>().Play();
+
+        _mechanicsForRandom = new List<GameMechanic>();        
+
+
+
+        AddMechanicsToGlobalList(_mechanicsForRandom, _dimensionalMechanics);
+        AddMechanicsToGlobalList(_mechanicsForRandom, _triggerMechanics);
+        AddMechanicsToGlobalList(_mechanicsForRandom, _mentalMechanics);
+
+        if (_useCombinedMechanics)
+        {
+            AddMechanicsToGlobalList(_mechanicsForRandom, _combinedMechanics);
+        }
+
+        if (_useActMechanic)
+        {
+            _mechanicsForRandom.Add(_actMechanic);
+        }
+
+        _startTrigger = true;
+
+        //_firstRandomResult = RandomizeMechanic(_mechanicsForRandom);
+        //ShowRandomResult(_firstRandomResult, _firstMechanicIcon, _firstMechanicName, _firstInfoButton);
+        //_secondRandomResult = RandomizeMechanic(_mechanicsForRandom);
+        //ShowRandomResult(_secondRandomResult, _secondMechanicIcon, _secondMechanicName, _secondInfoButton);
+        //_thirdRandomResult = RandomizeMechanic(_mechanicsForRandom);
+        //ShowRandomResult(_thirdRandomResult, _thirdMechanicIcon, _thirdMechanicName, _thirdInfoButton);
+    }
+
+    private void TryRandomizeMechanic(Image referenceIcon, Image icon, TextMeshProUGUI name, SpecialTargetScreen infoButton)
+    {
+        bool startTrigger = false;
+
+        if (referenceIcon.GetComponent<CanvasGroup>().alpha <= _toStartNextRandomCount && referenceIcon.GetComponent<CanvasGroup>().alpha >= (_toStartNextRandomCount - _triggerRange))
+            startTrigger = true;
+
+        if (startTrigger)
+            icon.GetComponent<CanvasGroup>().DOFade(0, _alphaDuration);
+
+        if (icon.GetComponent<CanvasGroup>().alpha <= 0.01f)
+        {
+            ShowRandomResult(RandomizeMechanic(_mechanicsForRandom), icon, name, infoButton);
+            icon.GetComponent<CanvasGroup>().DOFade(1, _alphaDuration);
+        }
+    }
+
+    private void TryRandomizeMechanic(Image referenceIcon, Image icon, TextMeshProUGUI name, SpecialTargetScreen infoButton, bool startTrigger)
+    {
+        if (referenceIcon.GetComponent<CanvasGroup>().alpha <= _toStartNextRandomCount)
+            startTrigger = false;
+
+        if (startTrigger)
+            icon.GetComponent<CanvasGroup>().DOFade(0, _alphaDuration);
+
+        if (icon.GetComponent<CanvasGroup>().alpha <= 0.01f)
+        {
+            ShowRandomResult(RandomizeMechanic(_mechanicsForRandom), icon, name, infoButton);
+            icon.GetComponent<CanvasGroup>().DOFade(1, _alphaDuration);
+        }
+
+        _startTrigger = false;
+    }
+
+    private GameMechanic RandomizeMechanic(List<GameMechanic> list)
+    {
+        GameMechanic mechanic = list[Random.Range(0, list.Count)];
+        list.Remove(mechanic);
+
+        return mechanic;
+    }
+
+    private void ShowRandomResult(GameMechanic mechanic, Image icon, TextMeshProUGUI name, SpecialTargetScreen infoButton)
+    {
+        icon.sprite = mechanic.Icon;
+        name.text = mechanic.Name;
+        icon.color = mechanic.Color;
+        name.color = mechanic.Color;
+        infoButton.NameOfInfoScreen = mechanic.NameOfInfoScreen;
+    }
+
+    private void AddMechanicsToGlobalList(List<GameMechanic> globalList, List<GameMechanic> sourceList)
+    {
+        foreach (var mechanic in sourceList)
+        {
+            globalList.Add(mechanic);
+        }
+    }
 
     public void AddCombinedMechanicsFromList()
     {
@@ -44,56 +158,18 @@ public class MechanicRandomizer : MonoBehaviour
         _useCombinedMechanics = false;
     }
 
-
-    public void RandomizeAllMechanic(bool useCombinedMechanics)
+    public void AddActMechanicFromList()
     {
-        List<GameMechanic> mechanicsForRandom = new List<GameMechanic>();
-
-        AddMechanicsToGlobalList(mechanicsForRandom, _dimensionalMechanics);
-        AddMechanicsToGlobalList(mechanicsForRandom, _triggerMechanics);
-        AddMechanicsToGlobalList(mechanicsForRandom, _mentalMechanics);
-
-        if (useCombinedMechanics)
-        {
-            AddMechanicsToGlobalList(mechanicsForRandom, _combinedMechanics);
-        }
-        
-        _firstResultMechanic = RandomizeMechanic(mechanicsForRandom);
-        ShowRandomResult(_firstResultMechanic, _firstMechanicIcon, _firstMechanicName, out _firstInfoScreenName);
-        _secondResultMechanic = RandomizeMechanic(mechanicsForRandom);
-        ShowRandomResult(_secondResultMechanic, _secondMechanicIcon, _secondMechanicName, out _secondInfoScreenName);
-        _thirdResultMechanic = RandomizeMechanic(mechanicsForRandom);
-        ShowRandomResult(_thirdResultMechanic, _thirdMechanicIcon, _thirdMechanicName, out _thirdInfoScreenName);
+        _useActMechanic = true;
     }
 
-    private GameMechanic RandomizeMechanic(List<GameMechanic> list)
+    public void NoAddActMechanicFromList()
     {
-        GameMechanic mechanic = list[Random.Range(0, list.Count)];
-        list.Remove(mechanic);
-
-        return mechanic;
+        _useActMechanic = false;
     }
 
-    private void ShowRandomResult(GameMechanic mechanic, Image icon, TextMeshProUGUI name, out string infoScreenName)
-    {
-        icon.sprite = mechanic.Icon;
-        name.text = mechanic.Name;
-        icon.color = mechanic.Color;
-        name.color = mechanic.Color;
-        infoScreenName = mechanic.NameOfInfoScreen;
-        //infoScreen.NameOfSpecialTargetScreen = mechanic.NameOfInfoScreen;
-    }
-
-    private void AddMechanicsToGlobalList(List<GameMechanic> globalList, List<GameMechanic> sourceList)
-    {
-        foreach (var mechanic in sourceList)
-        {
-            globalList.Add(mechanic);
-        }
-    }
-
-    private void TuneAboutButtonOnRandomResult()
-    {
+    //private void TuneAboutButtonOnRandomResult()
+    //{
         //GameObject backButton = _targetScreen.transform.Find("BackButton").gameObject;
 
         //for (int i = 0; i < _targetScreen.transform.childCount; i++)
@@ -106,5 +182,35 @@ public class MechanicRandomizer : MonoBehaviour
         //}
 
         //backButton.GetComponent<ScreenChanger>()._targetScreen = _currentScreen;
-    }
+    //}
+
+    //public void RandomizeAllMechanic()
+    //{
+    //    gameObject.GetComponent<AudioSource>().Play();
+
+    //    List<GameMechanic> mechanicsForRandom = new List<GameMechanic>();
+
+
+
+    //    AddMechanicsToGlobalList(mechanicsForRandom, _dimensionalMechanics);
+    //    AddMechanicsToGlobalList(mechanicsForRandom, _triggerMechanics);
+    //    AddMechanicsToGlobalList(mechanicsForRandom, _mentalMechanics);
+
+    //    if (_useCombinedMechanics)
+    //    {
+    //        AddMechanicsToGlobalList(mechanicsForRandom, _combinedMechanics);
+    //    }
+
+    //    if (_useActMechanic)
+    //    {
+    //        mechanicsForRandom.Add(_actMechanic);
+    //    }
+
+    //    _firstRandomResult = RandomizeMechanic(mechanicsForRandom);
+    //    ShowRandomResult(_firstRandomResult, _firstMechanicIcon, _firstMechanicName, _firstInfoButton);
+    //    _secondRandomResult = RandomizeMechanic(mechanicsForRandom);
+    //    ShowRandomResult(_secondRandomResult, _secondMechanicIcon, _secondMechanicName, _secondInfoButton);
+    //    _thirdRandomResult = RandomizeMechanic(mechanicsForRandom);
+    //    ShowRandomResult(_thirdRandomResult, _thirdMechanicIcon, _thirdMechanicName, _thirdInfoButton);
+    //}
 }
