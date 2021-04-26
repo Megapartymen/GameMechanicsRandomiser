@@ -33,12 +33,9 @@ public class LogoScreenAnimation : MonoBehaviour
     private IEnumerator PlayLogoScreenAnimation()
     {
         gameObject.GetComponent<CanvasGroup>().alpha = 0.02f;
-
-        yield return new WaitForSeconds(1);
-
         gameObject.GetComponent<CanvasGroup>().DOFade(1, _alphaDuration);
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
         gameObject.GetComponent<CanvasGroup>().alpha = 1;
         gameObject.GetComponent<CanvasGroup>().DOFade(0, _alphaDuration);
