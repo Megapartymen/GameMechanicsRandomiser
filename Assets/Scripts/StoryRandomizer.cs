@@ -53,7 +53,6 @@ public class StoryRandomizer : MonoBehaviour
     public void ToStartRandomizeStory()
     {
         _startTrigger = true;
-        gameObject.GetComponent<AudioSource>().Play();
     }
 
     private void TryRandomizeTextSpace(TextMeshProUGUI alphaReferenceForStart, TextMeshProUGUI textSpace, List<string> array)
@@ -95,5 +94,10 @@ public class StoryRandomizer : MonoBehaviour
     {
         string word = array[Random.Range(0, _heroArray.Count - 1)];
         return word;
+    }
+
+    private void PlaySound()
+    {
+        transform.root.GetComponent<AudioSourceConstructor>().PlayD6Sound();
     }
 }

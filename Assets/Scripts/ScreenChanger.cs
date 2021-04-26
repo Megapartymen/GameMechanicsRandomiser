@@ -25,7 +25,7 @@ public class ScreenChanger : MonoBehaviour
 
     public void ToStartScreenChange()
     {
-        
+        PlaySound();
 
         TryGetSpecialTargetScreen();
 
@@ -36,8 +36,7 @@ public class ScreenChanger : MonoBehaviour
             _targetScreen.GetComponent<CanvasGroup>().interactable = false;
         }
 
-        transform.root.GetComponent<AudioSource>().Play();
-
+        
     }
 
     private void TryLoadScreen()
@@ -75,5 +74,10 @@ public class ScreenChanger : MonoBehaviour
         {
             _targetScreen = specialTargetScreen.TargetScreen;
         }
+    }
+
+    public void PlaySound()
+    {
+        transform.root.GetComponent<AudioSourceConstructor>().PlayClickSound();
     }
 }
