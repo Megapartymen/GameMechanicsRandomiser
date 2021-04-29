@@ -29,9 +29,7 @@ public class StoryRandomizer : MonoBehaviour
     private bool _startTrigger;
 
     private void Start()
-    {
-        Debug.Log(_nouns.text);
-        
+    {      
         _alphaDuration = 0.5f;
         _triggerRange = 0.05f;
         _toStartNextRandomCount = 0.5f;

@@ -14,15 +14,7 @@ public class LogoScreenAnimation : MonoBehaviour
     {
         _alphaDuration = 0.8f;
 
-
-
-
-
         StartCoroutine(PlayLogoScreenAnimation());
-
-        
-
-
     }
 
     private void Update()
@@ -38,8 +30,7 @@ public class LogoScreenAnimation : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         gameObject.GetComponent<CanvasGroup>().alpha = 1;
-        gameObject.GetComponent<CanvasGroup>().DOFade(0, _alphaDuration);
-                                        
+        gameObject.GetComponent<CanvasGroup>().DOFade(0, _alphaDuration);                            
     }
 
     private void TryLoadNextScreen()
@@ -53,7 +44,5 @@ public class LogoScreenAnimation : MonoBehaviour
             _nextScreen.GetComponent<CanvasGroup>().DOFade(1f, _alphaDuration);
             _nextScreen.GetComponent<CanvasGroup>().interactable = true;
         }
-
     }
-
 }

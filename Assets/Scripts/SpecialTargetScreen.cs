@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class SpecialTargetScreen : MonoBehaviour
 {
-    [SerializeField] private GameObject _dummyScreen;
-    [SerializeField] public GameObject TargetScreen;
     [SerializeField] private GameObject _findInfoScreenSpace;
-    public string NameOfInfoScreen;
+    [HideInInspector] public string NameOfInfoScreen;
+    private GameObject _targetScreen;
+
+    public GameObject TargetScreen => _targetScreen;
 
     public void SetSpecialTargetScreen()
     {
@@ -15,7 +16,7 @@ public class SpecialTargetScreen : MonoBehaviour
 
         if (_findInfoScreenSpace != tempForScreen)
         {
-            TargetScreen = tempForScreen;
+            _targetScreen = tempForScreen;
         }
     }
 }
